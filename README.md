@@ -44,10 +44,19 @@ docker build -t github-gist-app:latest .
 `.` : Specifies the current directory as the build context.
 
 
-## 3. Run the Docker Container
+## 3. Build the Docker Network
+
+Use the docker network to create a common network for containers.
+
+```
+docker network create EqualExperts
+```
+
+
+## 4. Run the Docker Container
 Start the Flask app in a Docker container with the following command:
 ```
-docker run -d -p 5000:5000 --name github-gist-container github-gist-app:latest
+docker run -d -p 5000:5000 --network EqualExperts --name github-gist-container github-gist-app:latest
 ```
 
 `-d`: Runs the container in detached mode.
@@ -59,7 +68,7 @@ docker run -d -p 5000:5000 --name github-gist-container github-gist-app:latest
 
 
 
-## 4. Check if the Application is Running
+## 5. Check if the Application is Running
 
 Verify that the application is running by visiting the following URL in your browser:
 ```
@@ -78,18 +87,18 @@ You should see a response instructing how to use the API. For example:
 
 
 
-## 5. Test the API with a Python Script
-Use the provided test.py script to test the API. The script sends a request to the Flask app and prints the response.
+## 6. Test the API with a Python Script in same Docker image
+Use the provided test.py script to test the API. The script sends a request to the Flask app container and prints the response.
 
 Sample test.py Script:
 ```
-python3 test.py
+docker run --rm --network EqualExperts github-gist-app:latest python3 test.py 
 ```
 
 Please make sure to update tests as appropriate.
 
 
-## 6. Test the API with a github username
+## 7. Test the API with a github username
 
 Sample username `octocat`:
 ```
