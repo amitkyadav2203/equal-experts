@@ -1,43 +1,156 @@
-## :warning: Please read these instructions carefully and entirely first
-* Clone this repository to your local machine.
-* Use your IDE of choice to complete the assignment.
-* When you have completed the assignment, you need to  push your code to this repository and [mark the assignment as completed by clicking here](https://app.snapcode.review/submission_links/41f8ed08-9c58-4f01-a2d1-e2529d4b9e2b).
-* Once you mark it as completed, your access to this repository will be revoked. Please make sure that you have completed the assignment and pushed all code from your local machine to this repository before you click the link.
+# Flask App to fetch github user gists - Assignemnt Amit Kumar Yadav
 
-## Operability Take-Home Exercise
+This Flask application accepts a GitHub username and returns the public gists of that user on GitHub. The app is containerized using Docker for ease of deployment.
 
-Welcome to the start of our recruitment process for Operability Engineers. It was great to speak to you regarding an opportunity to join the Equal Experts network!
 
-Please write code to deliver a solution to the problems outlined below.
+## Prerequisites
 
-We appreciate that your time is valuable and do not expect this exercise to **take more than 90 minutes**. If you think this exercise will take longer than that, I **strongly** encourage you to please get in touch to ask any clarifying questions.
+Ensure the following are installed on your system:
 
-### Submission guidelines
-**Do**
-- Provide a README file in text or markdown format that documents a concise way to set up and run the provided solution.
-- Take the time to read any applicable API or service docs, it may save you significant effort.
-- Make your solution simple and clear. We aren't looking for overly complex ways to solve the problem since in our experience, simple and clear solutions to problems are generally the most maintainable and extensible solutions.
+`Git`: To clone the repository.
 
-**Don't**
+`Docker`: To build and run the Docker image.
 
-Expect the reviewer to dedicate a machine to review the test by:
+`Python 3`: For testing the API using the provided test.py script.
 
-- Installing software globally that may conflict with system software
-- Requiring changes to system-wide configurations
-- Providing overly complex solutions that need to spin up a ton of unneeded supporting dependencies. We aspire to keep our dev experiences as simple as possible (but no simpler)!
-- Include identifying information in your submission. We are endeavouring to make our review process anonymous to reduce bias.
 
-### Exercise
-If you have any questions on the below exercise, please do get in touch and we’ll answer as soon as possible.
 
-#### Build an API, test it, and package it into a container
-- Build a simple HTTP web server API in any general-purpose programming language[^1] that interacts with the GitHub API and responds to requests on `/<USER>` with a list of the user’s publicly available Gists[^2].
-- Create an automated test to validate that your web server API works. An example user to use as test data is `octocat`.
-- Package the web server API into a docker container that listens for requests on port `8080`. You do not need to publish the resulting container image in any container registry, but we are expecting the Dockerfile in the submission.
-- The solution may optionally provide other functionality (e.g. pagination, caching) but the above **must** be implemented.
+## Steps to Use
 
-Best of luck,  
-Equal Experts
-__________________________________________
-[^1]: For example Go, Python or Ruby but not Bash or Powershell.  
-[^2]: https://docs.github.com/en/rest/gists/gists?apiVersion=2022-11-28
+
+## 1. Clone the Repository and Change Branch
+```
+Clone the repository
+git clone https://github.com/EqualExperts-Assignments/equal-experts-resourceful-mature-impeccable-energy-a77cf20f8d12.git EqualExperts-Assignments
+
+# Navigate to the project directory
+cd EqualExperts-Assignments
+
+# Change to the desired branch
+git checkout amit-kumar-yadav
+```
+
+
+## 2. Build the Docker Image
+
+Use the docker build command to create the Docker image from the provided Dockerfile.
+
+```
+docker build -t github-gist-app:latest .
+```
+
+`-t`: Tags the image with a name (github-gist-app) and tag (latest).
+
+`.` : Specifies the current directory as the build context.
+
+
+## 3. Build the Docker Network
+
+Use the docker network to create a common network for containers.
+
+```
+docker network create EqualExperts
+```
+
+
+## 4. Run the Docker Container
+Start the Flask app in a Docker container with the following command:
+```
+docker run -d -p 5000:5000 --network EqualExperts --name github-gist-container github-gist-app:latest
+```
+
+`-d`: Runs the container in detached mode.
+
+`-p 5000:5000`: Maps port 5000 on your machine to port 5000 inside the container.
+
+`--name`: Assigns a name to the container (github-gist-container).
+
+
+
+
+## 5. Check if the Application is Running
+
+Verify that the application is running by visiting the following URL in your browser:
+```
+http://127.0.0.1:5000
+```
+
+You should see a response instructing how to use the API. For example:
+
+```
+{
+    "message": "Please provide a GitHub username in the path, e.g., /octocat, to retrieve public Gists for that user."
+}
+```
+
+
+
+
+
+## 6. Test the API with a Python Script in same Docker image
+Use the provided test.py script to test the API. The script sends a request to the Flask app container and prints the response.
+
+Sample test.py Script:
+```
+docker run --rm --network EqualExperts github-gist-app:latest python3 test.py 
+```
+
+Please make sure to update tests as appropriate.
+
+
+## 7. Test the API with a github username
+
+Sample username `octocat`:
+```
+http://127.0.0.1:5000/octocat
+```
+
+Response
+```
+[
+  {
+    "description": "Hello world!",
+    "id": "6cad326836d38bd3a7ae",
+    "url": "https://gist.github.com/octocat/6cad326836d38bd3a7ae"
+  },
+  {
+    "description": "",
+    "id": "0831f3fbd83ac4d46451",
+    "url": "https://gist.github.com/octocat/0831f3fbd83ac4d46451"
+  },
+  {
+    "description": "",
+    "id": "2a6851cde24cdaf4b85b",
+    "url": "https://gist.github.com/octocat/2a6851cde24cdaf4b85b"
+  },
+  {
+    "description": "Some common .gitignore configurations",
+    "id": "9257657",
+    "url": "https://gist.github.com/octocat/9257657"
+  },
+  {
+    "description": null,
+    "id": "1305321",
+    "url": "https://gist.github.com/octocat/1305321"
+  },
+  {
+    "description": null,
+    "id": "1169854",
+    "url": "https://gist.github.com/octocat/1169854"
+  },
+  {
+    "description": null,
+    "id": "1169852",
+    "url": "https://gist.github.com/octocat/1169852"
+  },
+  {
+    "description": null,
+    "id": "1162032",
+    "url": "https://gist.github.com/octocat/1162032"
+  }
+]
+```
+
+
+#### Note: Check pretty print in browser if not presented in json. 
+
