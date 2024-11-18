@@ -1,3 +1,10 @@
+## Reviewer Instructions
+If you are reviewing this submission, then you can do so in two ways
+
+* Look at the changes in [this pull request](https://github.com/equalexperts-assignments/equal-experts-resourceful-mature-impeccable-energy-a77cf20f8d12/pull/2)
+* Browse the code on Github
+    
+
 # Flask App to fetch github user gists - Assignemnt Amit Kumar Yadav
 
 This Flask application accepts a GitHub username and returns the public gists of that user on GitHub. The app is containerized using Docker for ease of deployment.
