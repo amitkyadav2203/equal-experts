@@ -19,7 +19,7 @@ jobs:
 
   test:
     runs-on: self-hosted
-    depends-on: build_docker_image
+    depends_on: build_docker_image
     steps:
       - name: Create docker network
         run: docker network create EqualExperts
@@ -36,7 +36,7 @@ jobs:
 
   cleanup:
     runs-on: self-hosted
-    depends-on: test
+    depends_on: test
     steps:
       - name: Clean up
         run: |
