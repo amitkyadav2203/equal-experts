@@ -17,6 +17,18 @@ jobs:
       - name: List the images
         run: docker images  
 
+      - name: Create docker network
+        run: docker network create EqualExperts
+
+      - name: Run the application
+        run: docker run -d -p 5000:5000 --network EqualExperts --name github-gist-container github-gist-app:latest
+
+      - name: List the running containers
+        run: docker ps
+      
+      - name: Run test cases
+        run: docker run --rm --network EqualExperts github-gist-app:latest python3 test.py
+
       # - name: tag and push the image to container repo 
       #   run: | 
       #     docker tag github-gist-app:latest ${{ secrets.DOCKER_HUB_USERNAME }}/{{env.REPO_NAME}}/github-gist-app:latest
