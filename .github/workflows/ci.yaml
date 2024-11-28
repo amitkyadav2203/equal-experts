@@ -1,0 +1,22 @@
+name: CI for Github Gist API
+
+on:
+  push:
+    branches:
+      - solution
+
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v2
+
+    - name: Build the image
+      run: docker build -t github-gist-app:latest .
+
+    - name: List the images
+      run: docker images  
+
+    # - name: tag and push the image to container repo 
+    #   run: | 
+    #     docker tag github-gist-app:latest ${{ secrets.DOCKER_HUB_USERNAME }}/{{env.REPO_NAME}}/github-gist-app:latest
+    #     docker push ${{ secrets.DOCKER_HUB_USERNAME }}/{{env.REPO_NAME}}/github-gist-app:latest
