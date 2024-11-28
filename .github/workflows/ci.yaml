@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_docker_image:
-    runs-on: ubuntu-latest
+    runs-on: amit
     steps:
       - uses: actions/checkout@v2
 
