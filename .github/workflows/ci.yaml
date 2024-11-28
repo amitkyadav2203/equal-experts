@@ -17,19 +17,30 @@ jobs:
       - name: List the images
         run: docker images  
 
+  test:
+    runs-on: self-hosted
+    steps:
       - name: Create docker network
         run: docker network create EqualExperts
 
       - name: Run the application
-        run: docker run -d -p 5000:5000 --network EqualExperts --name github-gist-container github-gist-app:latest
+        run: docker run --rm  -d -p 5000:5000 --network EqualExperts --name github-gist-container github-gist-app:latest
 
       - name: List the running containers
         run: docker ps
       
       - name: Run test cases
-        run: docker run --rm --network EqualExperts github-gist-app:latest python3 test.py
+        run: docker run --rm --network EqualExperts --name github-gist-container-test   github-gist-app:latest python3 test.py
 
-      # - name: tag and push the image to container repo 
-      #   run: | 
-      #     docker tag github-gist-app:latest ${{ secrets.DOCKER_HUB_USERNAME }}/{{env.REPO_NAME}}/github-gist-app:latest
-      #     docker push ${{ secrets.DOCKER_HUB_USERNAME }}/{{env.REPO_NAME}}/github-gist-app:latest
+
+  cleanup:
+    runs-on: self-hosted
+    steps:
+      - name: Clean up
+        run: |
+          docker stop github-gist-container github-gist-container-test
+          docker rm github-gist-container github-gist-container-test
+          docker network rm EqualExperts
+          docker rmi github-gist-app:latest
+
+
