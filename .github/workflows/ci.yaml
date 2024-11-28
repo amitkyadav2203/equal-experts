@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_docker_image:
-    runs-on: amit
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
 
